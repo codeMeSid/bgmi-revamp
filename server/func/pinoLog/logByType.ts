@@ -1,0 +1,5 @@
+export type LogByType =
+  | "SERVER REQUEST"
+  | "SREVER RESPONSE"
+  | "CLIENT REQUEST"
+  | "CLIENT RESPONSE";
