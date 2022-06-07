@@ -11,6 +11,8 @@ import { requestErrorHandler } from "./func/middlewares/requestErrorHandler";
 import { configManager } from "./func/configManager";
 import { log } from "./func/pinoLog";
 import { mongoConnector } from "./func/mongoConnect";
+import { playerRoutes } from "./routes/player";
+import { teamRoutes } from "./routes/team";
 
 // TODO add cookies
 (async () => {
@@ -23,6 +25,8 @@ import { mongoConnector } from "./func/mongoConnect";
     app.use(helmet());
     app.use(cors());
     // ROUTES
+    routeManager.register("/player", playerRoutes);
+    routeManager.register("/team", teamRoutes);
     routeManager.register("/test", testRoutes);
     routeManager.register("/*", systemRoutes);
     app.use("/api/sb/", routeManager.generateRoutes());

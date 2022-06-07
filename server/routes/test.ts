@@ -1,4 +1,5 @@
 import { DomainApi } from "../func/router/domainApi";
+import { generateShortname } from "../func/utils/generateShortname";
 
 export const testRoutes: Array<DomainApi> = [
   {
@@ -6,7 +7,10 @@ export const testRoutes: Array<DomainApi> = [
     method: "get",
     middlewares: [],
     controllerFunc: (req, res) => {
-      res.json({ success: true });
+      res.json({
+        success: true,
+        payload: { uid: generateShortname("sid dis pi") },
+      });
     },
   },
 ];

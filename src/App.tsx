@@ -1,4 +1,4 @@
-import { Box, Button, Theme } from "@mui/material";
+import { Box, Theme } from "@mui/material";
 import { makeStyles } from "@mui/styles";
 import { SnackbarProvider } from "notistack";
 import React, { useEffect, useRef } from "react";
@@ -58,23 +58,18 @@ function App() {
           }
         }
       );
+      setTimeout(() => {
+        dispatchAction({ type: "NOTIFICATION:REMOVE" });
+      }, 2000);
     }
   }, [notifications]);
-
-  const onDismissHandler = () =>
-    dispatchAction({ type: "NOTIFICATION:REMOVE" });
 
   return (
     <Box className={classes.root}>
       <SnackbarProvider
+        dense
         ref={notificationRef}
         className={classes.notification}
-        action={() => (
-          <Button sx={{ color: "white" }} onClick={onDismissHandler}>
-            Dismiss
-          </Button>
-        )}
-        dense
       >
         <Routes>
           <Route path="/" element={<HomePage />} />

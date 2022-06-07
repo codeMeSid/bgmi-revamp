@@ -4,6 +4,7 @@
   "private": true,
   "proxy": "http://localhost:4000/api/sb",
   "dependencies": {
+    "@mui/icons-material": "^5.8.0",
     "@mui/material": "^5.5.1",
     "@mui/styles": "^5.5.1",
     "axios": "^0.26.1",
@@ -20,6 +21,7 @@
     "material-color-hash": "^0.1.6",
     "mongoose": "^6.2.7",
     "notistack": "^2.0.3",
+    "firebase": "^9.6.11",
     "pino": "^7.8.1",
     "pino-pretty": "^7.5.3",
     "react": "^17.0.2",
