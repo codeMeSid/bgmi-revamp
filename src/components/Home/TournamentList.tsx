@@ -3,10 +3,11 @@ import {
   ArrowRight,
   Delete,
   Edit,
+  FileDownload,
+  FileUpload,
   Fireplace,
   Groups,
   Search,
-  Timeline,
   VideogameAsset,
 } from "@mui/icons-material";
 import {
@@ -100,7 +101,7 @@ export default function TournamentList() {
                       menuItems={[
                         {
                           title: "Download Stats",
-                          Icon: Timeline,
+                          Icon: FileDownload,
                           action: () =>
                             onModalToggle({
                               key: tournament?.key,
