@@ -1,20 +1,46 @@
-import { Add, Delete, Edit, Search, Timeline } from "@mui/icons-material";
+import {
+  Add,
+  ArrowRight,
+  Delete,
+  Edit,
+  Fireplace,
+  Groups,
+  Search,
+  Timeline,
+  VideogameAsset,
+} from "@mui/icons-material";
 import {
   Box,
+  Chip,
   IconButton,
   InputAdornment,
   Paper,
   TextField,
+  Theme,
   Typography,
 } from "@mui/material";
+import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { useRequest } from "../../utils/func/useRequest";
+import { COLOR } from "../../utils/styles/color";
 import ContextMenu from "../Common/ContextMenu";
 import DataContent from "../Common/DataContent";
 import TournamentAddModal from "../Modal/tournament/TournamentAddModal";
 
+const useStyles = makeStyles((theme: Theme) => ({
+  item: {
+    // backgroundColor: COLOR.backgroundLight,
+    clipPath: "polygon(0 0,95% 0,100% 100%,5% 100%)",
+    padding: theme.spacing(1, "5%"),
+    marginBottom: theme.spacing(1),
+    height: theme.spacing(10),
+  },
+}));
+
 export default function TournamentList() {
+  const classes = useStyles();
   const request = useRequest("get");
   const [tournaments, setTournaments] = useState<Array<any>>([]);
   const [searchedText, setSearchText] = useState("");
@@ -62,13 +88,18 @@ export default function TournamentList() {
         >
           {({ data }: any) => {
             return (
-              <Box>
+              <Box
+                marginTop={1}
+                padding={"8px 16px"}
+                height="90%"
+                overflow="scroll"
+              >
                 {data.map((tournament: any) => {
                   return (
                     <ContextMenu
                       menuItems={[
                         {
-                          title: "Stats",
+                          title: "Download Stats",
                           Icon: Timeline,
                           action: () =>
                             onModalToggle({
@@ -99,7 +130,62 @@ export default function TournamentList() {
                       key={v4()}
                     >
                       {(prop: any) => (
-                        <Box onContextMenu={prop.onContextToggle}>T</Box>
+                        <Paper
+                          onContextMenu={prop.onContextToggle}
+                          sx={{ p: 1, mb: 1 }}
+                          elevation={5}
+                        >
+                          <Box
+                            display="flex"
+                            alignItems="center"
+                            justifyContent="space-between"
+                          >
+                            <Typography
+                              fontSize={18}
+                              textTransform="capitalize"
+                            >
+                              {tournament.name}
+                            </Typography>
+                            <Link to={`/tournament/${tournament.key}`}>
+                              <IconButton size="small">
+                                <ArrowRight />
+                              </IconButton>
+                            </Link>
+                          </Box>
+                          <Box marginTop={1}>
+                            <Chip
+                              color="warning"
+                              size="small"
+                              icon={<Groups />}
+                              sx={{ mr: 1 }}
+                              label={`Teams: ${tournament.teams.length}`}
+                            />
+                            <Chip
+                              color="info"
+                              size="small"
+                              icon={<Groups />}
+                              sx={{ mr: 1 }}
+                              label={`Players: ${tournament.players.length}`}
+                            />
+                            <Chip
+                              color="error"
+                              size="small"
+                              icon={<Fireplace />}
+                              sx={{ mr: 1 }}
+                              label={`Phases: ${tournament.phases.length}`}
+                            />
+                            <Chip
+                              color="success"
+                              size="small"
+                              icon={<VideogameAsset />}
+                              label={`Matches: ${tournament.phases.reduce(
+                                (acc: number, phase: any) =>
+                                  acc + phase.matches.length,
+                                0
+                              )}`}
+                            />
+                          </Box>
+                        </Paper>
                       )}
                     </ContextMenu>
                   );

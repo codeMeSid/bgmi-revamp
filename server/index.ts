@@ -14,6 +14,7 @@ import { mongoConnector } from "./func/mongoConnect";
 import { playerRoutes } from "./routes/player";
 import { teamRoutes } from "./routes/team";
 import { tournamentRoutes } from "./routes/tournament";
+import path from "path";
 
 // TODO add cookies
 (async () => {
@@ -34,7 +35,7 @@ import { tournamentRoutes } from "./routes/tournament";
     app.use("/api/sb/", routeManager.generateRoutes());
     app.use(express.static(__dirname));
     app.use("/*", function (_, res) {
-      res.sendFile(`${__dirname}/index.html`);
+      res.sendFile(path.join(__dirname, "index.html"));
     });
     app.use(requestErrorHandler);
     // SERVER

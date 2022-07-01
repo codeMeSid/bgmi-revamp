@@ -11,7 +11,7 @@ import HomePage from "./pages/Home";
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
     backgroundColor: theme.palette.grey[300],
-    height: "100vh",
+    minHeight: "100vh",
   },
   notification: {
     textTransform: "capitalize",
