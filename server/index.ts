@@ -13,6 +13,7 @@ import { log } from "./func/pinoLog";
 import { mongoConnector } from "./func/mongoConnect";
 import { playerRoutes } from "./routes/player";
 import { teamRoutes } from "./routes/team";
+import { tournamentRoutes } from "./routes/tournament";
 
 // TODO add cookies
 (async () => {
@@ -25,6 +26,7 @@ import { teamRoutes } from "./routes/team";
     app.use(helmet());
     app.use(cors());
     // ROUTES
+    routeManager.register("/tournament", tournamentRoutes);
     routeManager.register("/player", playerRoutes);
     routeManager.register("/team", teamRoutes);
     routeManager.register("/test", testRoutes);

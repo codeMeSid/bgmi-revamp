@@ -8,7 +8,7 @@ interface TeamAttrs {
   shortName: string;
 }
 
-interface TeamDoc extends mongoose.Document {
+export interface TeamDoc extends mongoose.Document {
   name: string;
   shortName: string;
   src: string;

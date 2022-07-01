@@ -2,7 +2,6 @@ import { CustomError } from "../func/error";
 import { DomainApi } from "../func/router/domainApi";
 import { generateKey } from "../func/utils/generateKey";
 import { generateShortname } from "../func/utils/generateShortname";
-import { Player } from "../model/playerModel";
 import { Team } from "../model/teamModel";
 
 export const teamRoutes: Array<DomainApi> = [

@@ -53,12 +53,10 @@ export default function TeamList() {
           />
         </Box>
         <DataContent
-          data={
-            teams.filter((team: any) => {
-              if (!searchedText) return true;
-              return team.name.toLowerCase().match(searchedText);
-            }) || []
-          }
+          data={teams.filter((team: any) => {
+            if (!searchedText) return true;
+            return team.name.toLowerCase().match(searchedText);
+          })}
         >
           {({ data }: any) => {
             return (

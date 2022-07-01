@@ -56,12 +56,10 @@ export default function PlayerList() {
           />
         </Box>
         <DataContent
-          data={
-            players.filter((player: any) => {
-              if (!searchedText) return true;
-              return player.name.toLowerCase().match(searchedText);
-            }) || []
-          }
+          data={players.filter((player: any) => {
+            if (!searchedText) return true;
+            return player.name.toLowerCase().match(searchedText);
+          })}
         >
           {({ data }: any) => {
             return (

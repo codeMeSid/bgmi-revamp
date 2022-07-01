@@ -41,7 +41,7 @@ const PlayerSchema = new mongoose.Schema(
     status: { type: Boolean, default: true },
     matches: [
       {
-        matchDetail: { type: mongoose.SchemaTypes.ObjectId, ref: "Matches" },
+        matchDetail: { type: mongoose.SchemaTypes.ObjectId, ref: "matches" },
         teamDetail: { type: mongoose.SchemaTypes.ObjectId, ref: "teams" },
         playerDetail: {
           src: String,

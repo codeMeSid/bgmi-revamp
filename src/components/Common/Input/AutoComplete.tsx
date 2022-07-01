@@ -2,6 +2,7 @@ import { Autocomplete, TextField } from "@mui/material";
 
 type Props = {
   options?: Array<any>;
+  multiple?: boolean;
   value?: any;
   onChange: (value: any) => void;
   label?: string;
@@ -14,6 +15,7 @@ export default function AutoComplete(props: Props) {
   return (
     <Autocomplete
       autoHighlight
+      multiple={!!props.multiple}
       value={props.value}
       sx={{ ...props.styleOveride }}
       options={props?.options || []}
