@@ -14,7 +14,7 @@ import { mongoConnector } from "./func/mongoConnect";
 import { playerRoutes } from "./routes/player";
 import { teamRoutes } from "./routes/team";
 import { tournamentRoutes } from "./routes/tournament";
-import path from "path";
+import * as path from "path";
 
 // TODO add cookies
 (async () => {
