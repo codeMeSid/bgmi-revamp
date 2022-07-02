@@ -7,6 +7,7 @@ import { useActionDispatch } from "./utils/func/useActionDispatch";
 import useInterceptor from "./utils/func/interceptor";
 import { useStateSelector } from "./utils/func/useStateSelector";
 import HomePage from "./pages/Home";
+import TournamentPage from "./pages/Tournament";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -73,6 +74,10 @@ function App() {
       >
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route
+            path="/tournament/:tournamentKey"
+            element={<TournamentPage />}
+          />
         </Routes>
       </SnackbarProvider>
     </Box>
