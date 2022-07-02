@@ -42,6 +42,14 @@ export default function ContextMenu(props: Props) {
         anchorEl={anchorEl}
         open={Boolean(anchorEl)}
         onClose={onContextToggle}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "right",
+        }}
       >
         {props.menuItems.map((menuItem) => {
           return (

@@ -4,7 +4,6 @@ import {
   Delete,
   Edit,
   FileDownload,
-  FileUpload,
   Fireplace,
   Groups,
   Search,
@@ -17,31 +16,17 @@ import {
   InputAdornment,
   Paper,
   TextField,
-  Theme,
   Typography,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { v4 } from "uuid";
 import { useRequest } from "../../utils/func/useRequest";
-import { COLOR } from "../../utils/styles/color";
 import ContextMenu from "../Common/ContextMenu";
 import DataContent from "../Common/DataContent";
 import TournamentAddModal from "../Modal/tournament/TournamentAddModal";
 
-const useStyles = makeStyles((theme: Theme) => ({
-  item: {
-    // backgroundColor: COLOR.backgroundLight,
-    clipPath: "polygon(0 0,95% 0,100% 100%,5% 100%)",
-    padding: theme.spacing(1, "5%"),
-    marginBottom: theme.spacing(1),
-    height: theme.spacing(10),
-  },
-}));
-
 export default function TournamentList() {
-  const classes = useStyles();
   const request = useRequest("get");
   const [tournaments, setTournaments] = useState<Array<any>>([]);
   const [searchedText, setSearchText] = useState("");
@@ -93,7 +78,7 @@ export default function TournamentList() {
                 marginTop={1}
                 padding={"8px 16px"}
                 height="90%"
-                overflow="scroll"
+                sx={{ overflowY: "scroll" }}
               >
                 {data.map((tournament: any) => {
                   return (

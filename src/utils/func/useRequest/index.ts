@@ -11,7 +11,7 @@ export const useRequest = (method: HttpMethod) => {
     else if (method === "post") requestAxios = axios.post;
     else if (method === "put") requestAxios = axios.put;
     else requestAxios = axios.delete;
-    requestAxios(`api/sb${attrs.url}`, { payload: attrs.payload })
+    requestAxios(`/api/sb${attrs.url}`, { payload: attrs.payload })
       .then((response) => {
         const { success, payload } = response.data;
         if (success && attrs?.onSuccess) attrs.onSuccess(payload);
