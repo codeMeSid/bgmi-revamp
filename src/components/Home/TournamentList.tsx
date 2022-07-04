@@ -1,14 +1,6 @@
-import {
-  Add,
-  ArrowRight,
-  Delete,
-  Edit,
-  FileDownload,
-  Fireplace,
-  Groups,
-  Search,
-  VideogameAsset,
-} from "@mui/icons-material";
+import { Fireplace, Groups, Search, VideogameAsset } from "@mui/icons-material";
+import { ArrowRight, Delete, Edit, FileDownload } from "@mui/icons-material";
+import { Add } from "@mui/icons-material";
 import {
   Box,
   Chip,
@@ -25,6 +17,8 @@ import { useRequest } from "../../utils/func/useRequest";
 import ContextMenu from "../Common/ContextMenu";
 import DataContent from "../Common/DataContent";
 import TournamentAddModal from "../Modal/tournament/TournamentAddModal";
+import TournamentDeleteModal from "../Modal/tournament/TournamentDeleteModal";
+import TournamentEditModal from "../Modal/tournament/TournamentEditModal";
 
 export default function TournamentList() {
   const request = useRequest("get");
@@ -188,6 +182,34 @@ export default function TournamentList() {
           onUpdateHandler={(newTournament: any) =>
             setTournaments((pT: any) => [...pT, newTournament])
           }
+        />
+      )}
+      {tournamentAction.type === "edit" && (
+        <TournamentEditModal
+          tournamentKey={tournamentAction.key}
+          open={tournamentAction.type === "edit"}
+          onClose={() => onModalToggle({ key: "", type: "" })}
+          onUpdateHandler={(updateTournament: any) => {
+            const { key } = updateTournament;
+            setTournaments((pT: any) =>
+              pT.map((tournament: any) => {
+                if (tournament.key !== key) return tournament;
+                else return updateTournament;
+              })
+            );
+          }}
+        />
+      )}
+      {tournamentAction.type === "delete" && (
+        <TournamentDeleteModal
+          tournamentKey={tournamentAction.key}
+          open={tournamentAction.type === "delete"}
+          onClose={() => onModalToggle({ key: "", type: "" })}
+          onUpdateHandler={(tournamentKey: any) => {
+            setTournaments((pT: any) =>
+              pT.filter((tournament: any) => tournament.key !== tournamentKey)
+            );
+          }}
         />
       )}
     </>

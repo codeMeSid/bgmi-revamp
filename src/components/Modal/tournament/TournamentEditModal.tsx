@@ -17,20 +17,21 @@ import { useEffect, useState } from "react";
 import { v4 } from "uuid";
 import { ordinal_suffix } from "../../../utils/func/ordinal";
 import { useRequest } from "../../../utils/func/useRequest";
-import AutoComplete from "../../Common/Input/AutoComplete";
 import SbModal from "../../Common/Modal";
 
 type Props = {
   open: boolean;
   onClose: any;
   onUpdateHandler?: (data: any) => void;
+  tournamentKey: string;
 };
 
-export default function TournamentAddModal(props: Props) {
+export default function TournamentEditModal(props: Props) {
   const theme = useTheme();
-  const request = useRequest("post");
+  const request = useRequest("put");
   const getPlayersRequest = useRequest("get");
   const getTeamsRequest = useRequest("get");
+  const getTournamentRequest = useRequest("get");
   const [tournamentData, setTournamentData] = useState({
     name: "",
     awards: [25, 20, 15, 10],
@@ -42,6 +43,17 @@ export default function TournamentAddModal(props: Props) {
   useEffect(() => {
     getPlayersRequest({ url: "/player/get/all", onSuccess: setPlayers });
     getTeamsRequest({ url: "/team/get/all", onSuccess: setTeams });
+    getTournamentRequest({
+      url: `/tournament/get/${props.tournamentKey}`,
+      onSuccess: (data) => {
+        setTournamentData({
+          name: data.name,
+          awards: Object.values(data.awards),
+          teams: [],
+          players: [],
+        });
+      },
+    });
   }, []);
   const onAddClickHandler = () => {
     setTournamentData((pTD: any) => ({ ...pTD, awards: [...pTD.awards, 0] }));
@@ -54,7 +66,7 @@ export default function TournamentAddModal(props: Props) {
   };
   return (
     <SbModal
-      title="Add New Tournament"
+      title="Edit Tournament"
       actions={[]}
       open={props.open}
       onClose={() => {
@@ -68,7 +80,7 @@ export default function TournamentAddModal(props: Props) {
       }}
       onSubmitClick={() =>
         request({
-          url: "/tournament/add",
+          url: `/tournament/update/${props.tournamentKey}`,
           payload: tournamentData,
           onSuccess: (data: any) => {
             if (props?.onUpdateHandler) props.onUpdateHandler(data);
@@ -94,10 +106,11 @@ export default function TournamentAddModal(props: Props) {
         >
           <TextField
             fullWidth
+            disabled
             variant="standard"
             label="Tournament Name"
             value={tournamentData.name}
-            helperText="Let's use some kickass name"
+            helperText="That's some kickass name"
             onChange={(e: any) =>
               setTournamentData((pTD) => ({ ...pTD, name: e?.target?.value }))
             }

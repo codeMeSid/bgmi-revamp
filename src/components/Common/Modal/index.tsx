@@ -43,7 +43,7 @@ export default function SbModal(props: Props) {
         position="absolute"
         top="20%"
         left="50%"
-        width={theme.spacing(60)}
+        width={theme.spacing(55)}
         sx={{ transform: "translateX(-50%)" }}
       >
         <Box
