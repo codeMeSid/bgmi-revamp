@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import * as mongoose from "mongoose";
 import { CustomError } from "../func/error";
 import { DomainApi } from "../func/router/domainApi";
 import { generateKey } from "../func/utils/generateKey";
