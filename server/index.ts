@@ -24,7 +24,7 @@ import * as path from "path";
     // PLUGINS
     app.use(bodyParser.json());
     app.use(compression());
-    app.use(helmet());
+    // app.use(helmet());
     app.use(cors());
     // ROUTES
     routeManager.register("/tournament", tournamentRoutes);
