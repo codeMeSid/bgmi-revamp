@@ -17,7 +17,6 @@ import { useEffect, useState } from "react";
 import { v4 } from "uuid";
 import { ordinal_suffix } from "../../../utils/func/ordinal";
 import { useRequest } from "../../../utils/func/useRequest";
-import AutoComplete from "../../Common/Input/AutoComplete";
 import SbModal from "../../Common/Modal";
 
 type Props = {
@@ -257,7 +256,7 @@ export default function TournamentAddModal(props: Props) {
                 }}
                 onChange={(e: any) => {
                   const uAwards = tournamentData.awards;
-                  uAwards[index] = e.target.value;
+                  uAwards[index] = parseInt(e.target.value);
                   setTournamentData((pTD: any) => ({
                     ...pTD,
                     awards: uAwards,

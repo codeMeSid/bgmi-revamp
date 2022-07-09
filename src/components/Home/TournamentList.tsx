@@ -158,9 +158,9 @@ export default function TournamentList() {
                               color="success"
                               size="small"
                               icon={<VideogameAsset />}
-                              label={`Matches: ${tournament.phases.reduce(
+                              label={`Matches: ${tournament?.phases?.reduce(
                                 (acc: number, phase: any) =>
-                                  acc + phase.matches.length,
+                                  acc + phase?.matches?.length,
                                 0
                               )}`}
                             />

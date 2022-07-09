@@ -1,10 +1,11 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography, useTheme } from "@mui/material";
 
 type Props = {
   message?: string;
 };
 
 export default function NoData(props: Props) {
+  const theme = useTheme();
   return (
     <Box width="100%" height="100%" position="relative">
       <Box
@@ -12,7 +13,7 @@ export default function NoData(props: Props) {
         top="50%"
         left="50%"
         padding={1}
-        width={200}
+        minWidth={theme.spacing(25)}
         textTransform="uppercase"
         sx={{
           transform: "translate(-50%,-50%)",

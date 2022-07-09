@@ -1,3 +1,4 @@
+import mongoose from "mongoose";
 import { CustomError } from "../func/error";
 import { DomainApi } from "../func/router/domainApi";
 import { generateKey } from "../func/utils/generateKey";
@@ -55,6 +56,62 @@ export const tournamentRoutes: Array<DomainApi> = [
     },
   },
   {
+    url: "/add/phase/:tournamentKey",
+    method: "put",
+    middlewares: [],
+    controllerFunc: async (req, res) => {
+      const { tournamentKey } = req.params;
+      const { name, teams } = req.body.payload;
+      const tournament = await Tournament.findOne({ key: tournamentKey });
+      if (!tournament)
+        throw new CustomError("BadRequestError", ["Invalid Tournament Update"]);
+      const newPhase = {
+        key: generateKey(),
+        name,
+        matches: [],
+        teams: teams.map((team: any) => ({
+          teamDetail: new mongoose.Types.ObjectId(team.team.id),
+          players: team.players.map((player: any) => ({
+            playerDetail: new mongoose.Types.ObjectId(player.id),
+          })),
+        })),
+      };
+      tournament.phases.push(newPhase);
+      await tournament.save();
+      res.json({ success: true });
+    },
+  },
+  {
+    url: "/update/phase/:tournamentKey/:phaseKey",
+    method: "put",
+    middlewares: [],
+    controllerFunc: async (req, res) => {
+      const { tournamentKey, phaseKey } = req.params;
+      const { name, teams } = req.body.payload;
+      console.log(tournamentKey, phaseKey, name, teams);
+      const tournament = await Tournament.findOne({
+        key: tournamentKey,
+        status: true,
+      });
+      if (!tournament)
+        throw new CustomError("BadRequestError", ["Invalid Tournament Update"]);
+      tournament.phases = tournament.phases.map((phase) => {
+        if (phase.key === phaseKey) {
+          phase.name = name;
+          phase.teams = teams.map((team: any) => ({
+            teamDetail: new mongoose.Types.ObjectId(team.team.id),
+            players: team.players.map((player: any) => ({
+              playerDetail: new mongoose.Types.ObjectId(player.id),
+            })),
+          }));
+        }
+        return phase;
+      });
+      await tournament.save();
+      res.json({ success: true });
+    },
+  },
+  {
     url: "/update/:tournamentKey",
     method: "put",
     middlewares: [],
@@ -77,6 +134,22 @@ export const tournamentRoutes: Array<DomainApi> = [
       tournament.teams = teams.map((team: any) => team.id);
       await tournament.save();
       res.json({ success: true, payload: tournament });
+    },
+  },
+  {
+    url: "/delete/phase/:tournamentKey/:phaseKey",
+    method: "delete",
+    middlewares: [],
+    controllerFunc: async (req, res) => {
+      const { tournamentKey, phaseKey } = req.params;
+      const tournament = await Tournament.findOne({ key: tournamentKey });
+      if (!tournament)
+        throw new CustomError("BadRequestError", ["Invalid Tournament Update"]);
+      tournament.phases = tournament.phases.filter(
+        (phase) => phase.key !== phaseKey
+      );
+      await tournament.save();
+      res.json({ success: true });
     },
   },
   {
