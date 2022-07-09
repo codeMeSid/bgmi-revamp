@@ -188,7 +188,7 @@ export default function PhaseEditModal(props: Props) {
             </FormControl>
           </Grid>
           <Grid item xs={12}>
-            <Box marginTop={1}>
+            <Box marginTop={1} height={theme.spacing(25)} overflow="scroll">
               <Typography sx={{ marginTop: 1 }}>Selected Teams</Typography>
               {teams.length > 0 ? (
                 teams.map((sTeam: any, sTeamIndex: number) => {

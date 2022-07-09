@@ -15,6 +15,7 @@ import { playerRoutes } from "./routes/player";
 import { teamRoutes } from "./routes/team";
 import { tournamentRoutes } from "./routes/tournament";
 import * as path from "path";
+import { matchRoutes } from "./routes/match";
 
 // TODO add cookies
 (async () => {
@@ -27,6 +28,7 @@ import * as path from "path";
     // app.use(helmet());
     app.use(cors());
     // ROUTES
+    routeManager.register("/match", matchRoutes);
     routeManager.register("/tournament", tournamentRoutes);
     routeManager.register("/player", playerRoutes);
     routeManager.register("/team", teamRoutes);

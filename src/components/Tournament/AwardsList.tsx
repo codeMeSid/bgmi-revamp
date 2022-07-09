@@ -27,9 +27,9 @@ export default function AwardsList(props: any) {
         {awardsCheck ? (
           <TableContainer
             component={Paper}
-            sx={{ maxHeight: theme.spacing(40) }}
+            sx={{ height: theme.spacing(40), mr: 0.5 }}
           >
-            <Table stickyHeader>
+            <Table stickyHeader size="small">
               <TableHead>
                 <TableRow>
                   <TableCell>Position</TableCell>

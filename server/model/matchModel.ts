@@ -11,7 +11,7 @@ export enum MatchStatus {
 
 interface MatchAttrs {
   name: string;
-  map: string;
+  map: { name: string; src: string };
   key: string;
   awards: Map<number, number>;
   theme: any;
@@ -20,7 +20,7 @@ interface MatchAttrs {
 
 export interface MatchDoc extends mongoose.Document {
   name: string;
-  map: string;
+  map: { name: string; src: string };
   key: string;
   status: MatchStatus;
   theme: ThemeDoc;
@@ -50,7 +50,7 @@ interface MatchModel extends mongoose.Model<MatchDoc> {
 const MatchSchema = new mongoose.Schema(
   {
     name: String,
-    map: String,
+    map: { name: String, src: String },
     key: String,
     status: {
       type: String,

@@ -11,6 +11,7 @@ import {
   useTheme,
 } from "@mui/material";
 import { v4 } from "uuid";
+import PhaseItemMatches from "./PhaseItemMatches";
 import PhaseItemTeams from "./PhaseItemTeams";
 import PhaseItemTitle from "./PhaseItemTitle";
 
@@ -27,19 +28,10 @@ export default function PhaseItem(props: any) {
               padding={theme.spacing(0.5)}
               overflow="scroll"
             >
-              <Paper
-                elevation={3}
-                sx={{
-                  height: "100%",
-                  width: "100%",
-                  display: "flex",
-                  overflowY: "scroll",
-                }}
-              >
-                {/* {phase?.matches?.map((match: any) => {
-              return <Box key={v4()}></Box>;
-            })} */}
-              </Paper>
+              <PhaseItemMatches
+                matches={phase?.matches || []}
+                onModalToggle={onModalToggle}
+              />
             </Box>
           </Grid>
           <Grid item xs={8} md={8}>
@@ -47,7 +39,6 @@ export default function PhaseItem(props: any) {
               phaseKey={phase?.key}
               name={phase?.name}
               onModalToggle={onModalToggle}
-              isDisabled={Boolean(phase?.matches?.length)}
             />
             <PhaseItemTeams teams={phase?.teams} />
           </Grid>

@@ -45,6 +45,14 @@ const TournamentSchema = new mongoose.Schema(
       {
         name: String,
         key: String,
+        matches: [
+          {
+            matchDetail: {
+              type: mongoose.SchemaTypes.ObjectId,
+              ref: "matches",
+            },
+          },
+        ],
         teams: [
           {
             teamDetail: { type: mongoose.SchemaTypes.ObjectId, ref: "teams" },

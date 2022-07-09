@@ -8,7 +8,6 @@ import {
   TableCell,
   TableContainer,
   TableRow,
-  Tooltip,
   Typography,
   useTheme,
 } from "@mui/material";
@@ -21,7 +20,7 @@ export default function PhaseItemTeams(props: any) {
     <>
       <Typography align="center">Teams ({teams?.length})</Typography>
       <TableContainer component={Paper} sx={{ height: theme.spacing(18) }}>
-        <Table>
+        <Table size="small">
           <TableBody>
             {teams?.map((team: any) => {
               return (
@@ -66,32 +65,6 @@ export default function PhaseItemTeams(props: any) {
           </TableBody>
         </Table>
       </TableContainer>
-      {/* <Box
-        height={}
-        padding={theme.spacing(0.5)}
-        overflow="scroll"
-      >
-        {teams?.map((team: any) => {
-          return (
-           
-            // <Tooltip key={v4()} title={team?.teamDetail?.name}>
-            //   <Paper
-            //     elevation={3}
-            //     sx={{
-            //       mb: 1,
-            //       p: 0.5,
-            //       display: "flex",
-            //       alignItems: "center",
-            //     }}
-            //   >
-         
-            //      
-          
-            //   </Paper>
-            // </Tooltip>
-          );
-        })}
-      </Box> */}
     </>
   );
 }

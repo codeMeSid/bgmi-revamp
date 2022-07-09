@@ -11,6 +11,7 @@ import PhaseList from "../components/Tournament/PhaseList";
 import PhaseAddModal from "../components/Modal/phase/PhaseAddModal";
 import PhaseDeleteModal from "../components/Modal/phase/PhaseDeleteModal";
 import PhaseEditModal from "../components/Modal/phase/PhaseEditModal";
+import MatchAddModal from "../components/Modal/match/MatchAddModal";
 
 type TournamentStateType = {
   name: string;
@@ -124,7 +125,20 @@ export default function TournamentPage() {
           onClose={() => setTournamentAction({ key: "", type: "" })}
         />
       )}
-      {tournamentAction.type === "add-match" && <></>}
+      {tournamentAction.type === "add-match" && (
+        <>
+          <MatchAddModal
+            open={tournamentAction.type === "add-match"}
+            onClose={() => setTournamentAction({ key: "", type: "" })}
+            tournamentKey={tournamentKey}
+            phase={
+              tournament?.phases?.filter(
+                (phase: any) => phase.key === tournamentAction.key
+              )?.[0]
+            }
+          />
+        </>
+      )}
       {tournamentAction.type === "edit-phase" && (
         <>
           <PhaseEditModal

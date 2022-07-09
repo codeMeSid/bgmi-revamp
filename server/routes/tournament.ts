@@ -25,6 +25,11 @@ export const tournamentRoutes: Array<DomainApi> = [
       })
         .populate("players", "key name shortName src", "players")
         .populate("teams", "key name shortName src", "teams")
+        .populate(
+          "phases.matches.matchDetail",
+          "name teams map status key",
+          "matches"
+        )
         .populate("phases.teams.teamDetail", "key name shortName src", "teams")
         .populate(
           "phases.teams.players.playerDetail",
