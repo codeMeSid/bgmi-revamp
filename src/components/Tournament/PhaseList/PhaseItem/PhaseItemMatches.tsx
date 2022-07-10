@@ -1,10 +1,4 @@
-import {
-  Delete,
-  HelpOutline,
-  KeyboardArrowRight,
-  PlayArrow,
-  Stop,
-} from "@mui/icons-material";
+import { Delete, KeyboardArrowRight } from "@mui/icons-material";
 import {
   Avatar,
   Chip,
@@ -20,34 +14,19 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { v4 } from "uuid";
-import { useRequest } from "../../../../utils/func/useRequest";
-
 export default function PhaseItemMatches(props: any) {
   const { matches, onModalToggle } = props;
-  const matchStatusRequest = useRequest("put");
   const navigate = useNavigate();
-  const getTitleByStatus = (value: any) => {
+  const getColorByStatus = (value: any) => {
     switch (value) {
       case "started":
-        return "Stop Match";
+        return "success";
       case "upcoming":
-        return "Start Match";
+        return "primary";
       case "stopped":
-        return "Start Match";
+        return "error";
       default:
-        return "Mystery";
-    }
-  };
-  const getIconByStatus = (value: any) => {
-    switch (value) {
-      case "upcoming":
-        return <PlayArrow fontSize="small" />;
-      case "started":
-        return <Stop fontSize="small" />;
-      case "stopped":
-        return <PlayArrow fontSize="small" />;
-      default:
-        return <HelpOutline fontSize="small" />;
+        return "secondary";
     }
   };
   return (
@@ -62,8 +41,13 @@ export default function PhaseItemMatches(props: any) {
                 </TableCell>
                 <TableCell>
                   <Typography fontWeight="bold">
-                    {match?.matchDetail?.name}
+                    {match?.matchDetail?.name}&nbsp;
                   </Typography>
+                  <Chip
+                    size="small"
+                    color={getColorByStatus(match.matchDetail?.status)}
+                    label={match.matchDetail?.status}
+                  />
                 </TableCell>
                 <TableCell>
                   <Tooltip title="Delete Match">
@@ -77,19 +61,6 @@ export default function PhaseItemMatches(props: any) {
                       }
                     >
                       <Delete fontSize="small" color="error" />
-                    </IconButton>
-                  </Tooltip>
-                  <Tooltip title={getTitleByStatus(match?.matchDetail?.status)}>
-                    <IconButton
-                      size="small"
-                      onClick={() =>
-                        matchStatusRequest({
-                          url: `/match/update/status/${match?.matchDetail?.key}`,
-                          onSuccess: () => window.location.reload(),
-                        })
-                      }
-                    >
-                      {getIconByStatus(match?.matchDetail?.status)}
                     </IconButton>
                   </Tooltip>
                   <Tooltip title="Go To Match">

@@ -62,4 +62,28 @@ export const matchRoutes: Array<DomainApi> = [
       res.json({ success: true });
     },
   },
+  {
+    url: "/delete/:tournamentKey/:matchKey",
+    method: "delete",
+    middlewares: [],
+    controllerFunc: async (req, res) => {
+      const { tournamentKey, matchKey } = req.params;
+      const match = await Match.findOne({ key: matchKey });
+      if (!match) throw new CustomError("BadRequestError", ["Match Not Found"]);
+      const tournament = await Tournament.findOne({ key: tournamentKey });
+      if (!tournament)
+        throw new CustomError("BadRequestError", ["Tournament Not Found"]);
+
+      tournament.phases = tournament.phases.map((phase) => {
+        phase.matches = phase.matches.filter(
+          (phaseMatch) => `${phaseMatch.matchDetail}` !== `${match.id}`
+        );
+        return phase;
+      });
+
+      await tournament.save();
+      await match.delete();
+      res.json({ success: true });
+    },
+  },
 ];

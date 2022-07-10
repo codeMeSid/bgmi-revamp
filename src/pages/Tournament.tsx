@@ -12,6 +12,8 @@ import PhaseAddModal from "../components/Modal/phase/PhaseAddModal";
 import PhaseDeleteModal from "../components/Modal/phase/PhaseDeleteModal";
 import PhaseEditModal from "../components/Modal/phase/PhaseEditModal";
 import MatchAddModal from "../components/Modal/match/MatchAddModal";
+import TournamentEditModal from "../components/Modal/tournament/TournamentEditModal";
+import MatchDeleteModal from "../components/Modal/match/MatchDeleteModal";
 
 type TournamentStateType = {
   name: string;
@@ -85,7 +87,12 @@ export default function TournamentPage() {
     <>
       <Box padding={1}>
         <Grid container spacing={1}>
-          <TournamentTitle name={tournament.name} status={tournament.status} />
+          <TournamentTitle
+            name={tournament.name}
+            status={tournament.status}
+            tournamentKey={tournamentKey}
+            onModalToggle={onModalToggle}
+          />
           <AwardsList awards={tournament.awards} />
           <Grid item xs={12} md={8}>
             <Paper
@@ -116,6 +123,14 @@ export default function TournamentPage() {
           </Grid>
         </Grid>
       </Box>
+      {tournamentAction.type === "edit-tournament" && (
+        <TournamentEditModal
+          tournamentKey={tournamentAction.key}
+          open={tournamentAction.type === "edit-tournament"}
+          onClose={() => onModalToggle({ key: "", type: "" })}
+          onUpdateHandler={() => window.location.reload()}
+        />
+      )}
       {tournamentAction.type === "add-phase" && (
         <PhaseAddModal
           open={tournamentAction.type === "add-phase"}
@@ -155,15 +170,19 @@ export default function TournamentPage() {
           />
         </>
       )}
-      {tournamentAction.type === "delete-phase" && (
+      {tournamentAction.type === "delete-match" && (
         <>
-          <PhaseDeleteModal
-            open={tournamentAction.type === "delete-phase"}
+          <MatchDeleteModal
+            open={tournamentAction.type === "delete-match"}
             tournamentKey={tournamentKey}
-            phase={
-              tournament?.phases?.filter(
-                (phase: any) => phase.key === tournamentAction.key
-              )[0]
+            match={
+              tournament?.phases
+                ?.map((phase) => {
+                  return phase.matches.filter(
+                    (match) => match.matchDetail.key === tournamentAction.key
+                  )?.[0];
+                })
+                .filter((match) => match)?.[0]?.matchDetail
             }
             onClose={() => setTournamentAction({ key: "", type: "" })}
           />
