@@ -58,7 +58,6 @@ export default function TournamentPage() {
     request({
       url: `/tournament/get/${tournamentKey}`,
       onSuccess: (data) => {
-        console.log({ data });
         if (data)
           setTournament((pT) => ({
             ...pT,

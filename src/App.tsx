@@ -8,6 +8,7 @@ import useInterceptor from "./utils/func/interceptor";
 import { useStateSelector } from "./utils/func/useStateSelector";
 import HomePage from "./pages/Home";
 import TournamentPage from "./pages/Tournament";
+import MatchPage from "./pages/Match";
 
 const useStyles = makeStyles((theme: Theme) => ({
   root: {
@@ -78,6 +79,7 @@ function App() {
             path="/tournament/:tournamentKey"
             element={<TournamentPage />}
           />
+          <Route path="/match/:matchKey" element={<MatchPage />} />
         </Routes>
       </SnackbarProvider>
     </Box>

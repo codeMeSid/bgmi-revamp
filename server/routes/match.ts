@@ -7,6 +7,19 @@ import { Tournament } from "../model/tournamentModel";
 
 export const matchRoutes: Array<DomainApi> = [
   {
+    url: "/get/:matchKey",
+    method: "get",
+    middlewares: [],
+    controllerFunc: async (req, res) => {
+      const { matchKey } = req.params;
+      const match = await Match.findOne({ key: matchKey })
+        .populate("teams.teamDetail", "key name src", "teams")
+        .populate("teams.players.playerDetail", "key name src", "players");
+      if (!match) throw new CustomError("BadRequestError", ["Match Not Found"]);
+      res.json({ success: "true", payload: match });
+    },
+  },
+  {
     url: "/add/:tournamentKey/:phaseKey",
     method: "post",
     middlewares: [],
@@ -23,9 +36,9 @@ export const matchRoutes: Array<DomainApi> = [
         map,
         teams: teams?.map((team: any) => ({
           teamDetail: new mongoose.Types.ObjectId(team.teamDetail.id),
-          players: team?.players?.map(
-            (player: any) => new mongoose.Types.ObjectId(player.playerDetail.id)
-          ),
+          players: team?.players?.map((player: any) => ({
+            playerDetail: new mongoose.Types.ObjectId(player.playerDetail.id),
+          })),
         })),
         theme: null,
       });

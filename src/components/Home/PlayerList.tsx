@@ -1,13 +1,14 @@
 import {
   Avatar,
   Box,
+  Chip,
   IconButton,
   InputAdornment,
   Paper,
   TextField,
-  Tooltip,
   Typography,
 } from "@mui/material";
+import colorHash from "material-color-hash";
 import { Add, Delete, Edit, Search, Timeline } from "@mui/icons-material";
 import ContextMenu from "../Common/ContextMenu";
 import DataContent from "../Common/DataContent";
@@ -97,17 +98,28 @@ export default function PlayerList() {
                         },
                       ]}
                     >
-                      {(prop: any) => (
-                        <Tooltip arrow placement="top" title={player.name}>
-                          <Avatar
-                            onContextMenu={prop.onContextToggle}
-                            src={player.src}
-                            sx={{ mb: 1, mr: 1 }}
-                          >
-                            {player.name[0]}
-                          </Avatar>
-                        </Tooltip>
-                      )}
+                      {(prop: any) => {
+                        const clr = colorHash(player.name, 500);
+                        return (
+                          <Chip
+                            sx={{
+                              mb: 1,
+                              mr: 1,
+                              bgcolor: clr.backgroundColor,
+                              color: clr.color,
+                            }}
+                            label={player.name}
+                            avatar={
+                              <Avatar
+                                onContextMenu={prop.onContextToggle}
+                                src={player.src}
+                              >
+                                {player.name[0]}
+                              </Avatar>
+                            }
+                          />
+                        );
+                      }}
                     </ContextMenu>
                   );
                 })}
