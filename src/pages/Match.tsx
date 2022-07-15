@@ -1,13 +1,16 @@
-import { PlayArrow, Stop, HelpOutline } from "@mui/icons-material";
-import { Box, Grid, Paper } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import MatchScoreboard from "../components/Match/MatchScoreboard";
+import MatchTeamStatusTable from "../components/Match/MatchTeamStatusTable";
 import MatchTitle from "../components/Match/MatchTitle";
+import MatchTop4Teams from "../components/Match/MatchTop4Teams";
 import { useRequest } from "../utils/func/useRequest";
 
 export default function MatchPage() {
   const { matchKey } = useParams();
   const getMatchRequest = useRequest("get");
+  const updateMatchRequest = useRequest("put");
   const [match, setMatch] = useState({
     name: "No Match",
     key: "",
@@ -17,56 +20,52 @@ export default function MatchPage() {
     teams: [],
     onDate: { started: "", stopped: "" },
   });
-  const [matchAction, setMatchAction] = useState({ type: "", key: "" });
   useEffect(() => {
     getMatchRequest({
       url: `/match/get/${matchKey}`,
-      onSuccess: (data: any) => {
-        console.log({ data });
-        setMatch((pM) => ({ ...pM, ...data }));
-      },
+      onSuccess: setMatch,
     });
   }, []);
-  const onModalToggle = (e: any) => setMatchAction(e);
-  // const getTitleByStatus = (value: any) => {
-  //   switch (value) {
-  //     case "started":
-  //       return "Stop Match";
-  //     case "upcoming":
-  //       return "Start Match";
-  //     case "stopped":
-  //       return "Start Match";
-  //     default:
-  //       return "Mystery";
-  //   }
-  // };
-  // const getIconByStatus = (value: any) => {
-  //   switch (value) {
-  //     case "upcoming":
-  //       return <PlayArrow fontSize="small" />;
-  //     case "started":
-  //       return <Stop fontSize="small" />;
-  //     case "stopped":
-  //       return <PlayArrow fontSize="small" />;
-  //     default:
-  //       return <HelpOutline fontSize="small" />;
-  //   }
-  // };
+  const onUpdateHandler = (data: any) =>
+    updateMatchRequest({
+      url: `/match/update/stats/${match?.key}`,
+      payload: data,
+      onSuccess: setMatch,
+    });
+  const top4TeamSort = (teamA: any, teamB: any) => {
+    const { position: posA, players: playersA } = teamA;
+    const { position: posB, players: playersB } = teamB;
+    const posPointsA = (match?.awards as any)?.[posA] || 0;
+    const posPointsB = (match?.awards as any)?.[posB] || 0;
+    const finishesTeamA = (playersA || []).reduce(
+      (acc: any, player: any) => acc + (player?.finishes || 0),
+      0
+    );
+    const finishesTeamB = (playersB || []).reduce(
+      (acc: any, player: any) => acc + (player?.finishes || 0),
+      0
+    );
+    return finishesTeamB + posPointsB - (finishesTeamA + posPointsA);
+  };
   return (
     <>
       <Box padding={1}>
         <Grid container spacing={1}>
-          <Grid item xs={12} md={12}>
-            <MatchTitle
-              map={match.map}
-              name={match.name}
-              status={match.status}
-              matchKey={match.key}
-              awards={match.awards}
-              onDate={match.onDate}
-              onModalToggle={onModalToggle}
-            />
-          </Grid>
+          <MatchTitle
+            map={match.map}
+            name={match.name}
+            status={match.status}
+            matchKey={match.key}
+            awards={match.awards}
+            onDate={match.onDate}
+          />
+          <MatchTop4Teams teams={match.teams.sort(top4TeamSort).slice(0, 4)} />
+          <MatchScoreboard
+            onUpdateHandler={onUpdateHandler}
+            teams={match.teams}
+            awards={match.awards}
+          />
+          <MatchTeamStatusTable teams={match.teams} />
         </Grid>
       </Box>
     </>

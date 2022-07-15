@@ -5,6 +5,7 @@ type Props = {
   children?: any;
   data?: Array<any>;
   fetchData?: () => Promise<any>;
+  message?: string;
 };
 
 export default function DataContent(props: Props) {
@@ -18,5 +19,9 @@ export default function DataContent(props: Props) {
       })();
     else if (props?.data) setData(props?.data || []);
   }, [props.data, props.fetchData]);
-  return Boolean(data.length) ? props.children({ data }) : <NoData />;
+  return Boolean(data.length) ? (
+    props.children({ data })
+  ) : (
+    <NoData message={props.message} />
+  );
 }

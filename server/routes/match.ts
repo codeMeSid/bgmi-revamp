@@ -13,8 +13,12 @@ export const matchRoutes: Array<DomainApi> = [
     controllerFunc: async (req, res) => {
       const { matchKey } = req.params;
       const match = await Match.findOne({ key: matchKey })
-        .populate("teams.teamDetail", "key name src", "teams")
-        .populate("teams.players.playerDetail", "key name src", "players");
+        .populate("teams.teamDetail", "key name shortName src", "teams")
+        .populate(
+          "teams.players.playerDetail",
+          "key name shortName src",
+          "players"
+        );
       if (!match) throw new CustomError("BadRequestError", ["Match Not Found"]);
       res.json({ success: "true", payload: match });
     },
@@ -65,6 +69,7 @@ export const matchRoutes: Array<DomainApi> = [
         case MatchStatus.STOPPED:
           match.status = MatchStatus.STARTED;
           if (!match.onDate.started) match.onDate.started = new Date();
+          match.onDate.stopped = undefined;
           break;
         case MatchStatus.STARTED:
           match.status = MatchStatus.STOPPED;
@@ -73,6 +78,35 @@ export const matchRoutes: Array<DomainApi> = [
       }
       await match.save();
       res.json({ success: true });
+    },
+  },
+  {
+    url: "/update/stats/:matchKey",
+    method: "put",
+    middlewares: [],
+    controllerFunc: async (req, res) => {
+      const { matchKey } = req.params;
+      const match = await Match.findOne({ key: matchKey })
+        .populate("teams.teamDetail", "key name shortName src", "teams")
+        .populate(
+          "teams.players.playerDetail",
+          "key name shortName src",
+          "players"
+        );
+      if (!match) throw new CustomError("BadRequestError", ["Match Not Found"]);
+      const teams = req.body.payload;
+      match.teams = Array.from(teams).map((team: any) => ({
+        ...team,
+        teamDetail: new mongoose.Types.ObjectId(team.teamDetail.id),
+        players: team.players.map((player: any) => {
+          return {
+            ...player,
+            playerDetail: new mongoose.Types.ObjectId(player.playerDetail.id),
+          };
+        }),
+      }));
+      await match.save();
+      res.json({ success: true, payload: { ...(match as any)._doc, teams } });
     },
   },
   {

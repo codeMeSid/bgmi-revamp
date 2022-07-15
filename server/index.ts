@@ -3,7 +3,6 @@ import * as express from "express";
 import * as bodyParser from "body-parser";
 import * as compression from "compression";
 import * as cors from "cors";
-import helmet from "helmet";
 import routeManager from "./func/router";
 import { testRoutes } from "./routes/test";
 import { systemRoutes } from "./routes/system";

@@ -39,7 +39,7 @@ export interface MatchDoc extends mongoose.Document {
   }>;
   onDate: {
     started: Date;
-    stopped: Date;
+    stopped?: Date;
   };
 }
 

@@ -187,7 +187,6 @@ export default function TournamentPage() {
           />
         </>
       )}
-      {tournamentAction.type === "delete-match" && <></>}
     </>
   );
 }
